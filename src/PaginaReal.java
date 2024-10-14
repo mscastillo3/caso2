@@ -3,20 +3,28 @@ public class PaginaReal {
     private int modificacion;
     private int referencia;
     private int presencia;
-    private int contenido;
+    public int getNumero() {
+        return numero;
+    }
 
-    // Constructor
-    public PaginaReal(int numero, int modificacion, int referencia, int presencia, int contenido) {
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+    private int[] contenido;
+
+    
+    public PaginaReal(int numero, int modificacion, int referencia, int presencia, int tamañoP) {
         this.numero = numero;
         this.modificacion = modificacion;
         this.referencia = referencia;
         this.presencia = presencia;
-        this.contenido = contenido;
+        this.contenido = new int[tamañoP];
     }
 
-    // Getters y Setters
-    public int getNumero() { return numero; }
-    public void setNumero(int numero) { this.numero = numero; }
+    public int getDireccion() { return numero; }
+    public void setDireccion(int direccion) { this.numero = direccion; }
+
 
     public int getModificacion() { return modificacion; }
     public void setModificacion(int modificacion) { this.modificacion = modificacion; }
@@ -27,6 +35,11 @@ public class PaginaReal {
     public int getPresencia() { return presencia; }
     public void setPresencia(int presencia) { this.presencia = presencia; }
 
-    public int getContenido() { return contenido; }
-    public void setContenido(int contenido) { this.contenido = contenido; }
+    public void agregarDato(int dato, int posicion) {
+        contenido[posicion] = dato;
+    }
+
+    public int getDato (int desplasamiento){
+        return contenido[desplasamiento];
+    }
 }
