@@ -1,5 +1,21 @@
 TP: 256
 NF: 256
 NC: 384
-NR: 836552
+NR: 81956
 NP: 1152
+Imagen[0][0] . R,0,0,R
+Imagen[0][0] . G,0,1,R
+Imagen[0][0] . B,0,2,R
+Imagen[0][1] . R,0,3,R
+Imagen[0][1] . G,0,4,R
+Imagen[0][1] . B,0,5,R
+Imagen[0][2] . R,0,6,R
+Imagen[0][2] . G,0,7,R
+Imagen[0][2] . B,0,8,R
+Imagen[0][3] . R,0,9,R
+Imagen[0][3] . G,0,10,R
+Imagen[0][3] . B,0,11,R
+Imagen[0][4] . R,0,12,R
+Imagen[0][4] . G,0,13,R
+Imagen[0][4] . B,0,14,R
+Imagen[0][5] . R,0,15,R

@@ -178,9 +178,10 @@ public void recuperar(char[] cadena, int longitud, SimuladorNRU manejadorMemoria
             int numBytes = 16 + (posCaracter*8) + i;
             int fila = numBytes/bytesFila;
             int col = numBytes % (bytesFila) / 3;
-            int bitE = fila * col * 3+( (numBytes % bytesFila) % 3 );
+            int bitE = fila * (col-1) * 3 + (col-1) *3+( (numBytes % bytesFila) % 3 );
             int pagina = bitE /tamañoP;
             int referencia = bitE % tamañoP;
+            
             char mensaje =  (char)( cadena[posCaracter] | (imagen[fila][col][( (numBytes % bytesFila) % 3 )] & 1) << i) ;
             cadena[posCaracter] = mensaje;
         }   
@@ -248,6 +249,8 @@ public String referenciaVirtaul(int tamañoP, MemoriaVirtual virtual, MemoriaSwa
             }
             y++;
         }
+
+        x++;
     }
 
     virtual.agregarPaginaVirtual(paginaV);

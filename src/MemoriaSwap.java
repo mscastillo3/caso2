@@ -5,8 +5,7 @@ public class MemoriaSwap {
     private int tamaño;
     private HashMap<String, PaginaReal> paginas ;
     
-    public MemoriaSwap(int tamaño) {
-        this.tamaño = tamaño;
+    public MemoriaSwap() {
         paginas = new HashMap<String, PaginaReal>();
     }
 
@@ -16,6 +15,10 @@ public class MemoriaSwap {
 
     public void quitarPaginaReal(PaginaReal paginaReal) {
         paginas.remove(String.valueOf(paginaReal.getDireccion()));
+    }
+
+    public PaginaReal conseguirPaginaReal(int numero) {
+        return paginas.get(String.valueOf(numero));
     }
 
 
