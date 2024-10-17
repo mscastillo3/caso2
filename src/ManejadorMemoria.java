@@ -25,7 +25,7 @@ public class ManejadorMemoria extends Thread {
 
     public void informacion(int pagina, int mod)  {
         
-        synchronized(tablaDePaginas){
+        synchronized(ram){
                 
         PaginaVirtual paginaVirtual = tablaDePaginas.RecuperarPaginaV(pagina, memoriaVirtual);
         if (paginaVirtual.getPresencia() == 1){
@@ -79,6 +79,7 @@ public class ManejadorMemoria extends Thread {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            
 
             String[] contenido = linea.split(",");
             int mod = 0;

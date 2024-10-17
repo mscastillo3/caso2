@@ -11,7 +11,7 @@ public class TablaDePaginas extends Thread{
         }
     }
 
-    synchronized public void buscarPagina(int pocicionPaginaVirtual, Ram ram, PaginaVirtual paginaVirtual) {
+    public void buscarPagina(int pocicionPaginaVirtual, Ram ram, PaginaVirtual paginaVirtual) {
         synchronized (ram) {
         int x = 0;
         for (int i = 0; i < listaDeRelacion.length; i++) {
@@ -24,7 +24,7 @@ public class TablaDePaginas extends Thread{
     }
     }
 
-    synchronized public void reemplazarPagina( PaginaReal pagianReal, PaginaVirtual paginaVirtual, Ram ram) {
+    public void reemplazarPagina( PaginaReal pagianReal, PaginaVirtual paginaVirtual, Ram ram) {
         synchronized (ram) {
             ram.agregarPaginaReal(pagianReal);
             listaDeRelacion[pagianReal.getNumero()] = paginaVirtual.getNumereDePagina();
@@ -32,7 +32,7 @@ public class TablaDePaginas extends Thread{
 
     }
 
-    synchronized public void  quitarPagina(Integer vpagianReal, Ram ram, MemoriaVirtual memoriaVirtual) {
+    public void  quitarPagina(Integer vpagianReal, Ram ram, MemoriaVirtual memoriaVirtual) {
         synchronized (ram) {
         PaginaReal paginaReal = ram.conseguirPaginaReal(vpagianReal);
         memoriaVirtual.RecuperarPagina(listaDeRelacion[paginaReal.getNumero()]).setPresencia(0);
@@ -42,7 +42,7 @@ public class TablaDePaginas extends Thread{
 
     }
 
-    synchronized public  PaginaVirtual RecuperarPaginaV(int pagina, MemoriaVirtual memoriaVirtual) {
+    public  PaginaVirtual RecuperarPaginaV(int pagina, MemoriaVirtual memoriaVirtual) {
         
         return memoriaVirtual.RecuperarPagina(pagina);
     }
