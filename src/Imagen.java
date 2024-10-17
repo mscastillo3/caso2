@@ -168,8 +168,9 @@ public int leerLongitud() {
 * y el mensaje.
 * @pos cadena contiene el mensaje escondido en la imagen
 */
-public void recuperar(char[] cadena, int longitud, SimuladorNRU manejadorMemoria, int tamañoP) {
+public String recuperar(char[] cadena, int longitud) {
  //(imagen.ancho*3) ancho de cada fila de la matriz en bytes
+    String mensaje1 = ""; 
     int bytesFila=ancho*3;
     for (int posCaracter = 0; posCaracter < longitud; posCaracter++) {
         cadena[posCaracter]=0;
@@ -178,14 +179,11 @@ public void recuperar(char[] cadena, int longitud, SimuladorNRU manejadorMemoria
             int numBytes = 16 + (posCaracter*8) + i;
             int fila = numBytes/bytesFila;
             int col = numBytes % (bytesFila) / 3;
-            int bitE = fila * (col-1) * 3 + (col-1) *3+( (numBytes % bytesFila) % 3 );
-            int pagina = bitE /tamañoP;
-            int referencia = bitE % tamañoP;
-            
             char mensaje =  (char)( cadena[posCaracter] | (imagen[fila][col][( (numBytes % bytesFila) % 3 )] & 1) << i) ;
             cadena[posCaracter] = mensaje;
         }   
- }
+    }
+    return mensaje1;
 }
 
 
@@ -201,14 +199,16 @@ public byte [][][] getImagen() {
 
 }
 
-public String referenciaVirtaul(int tamañoP, MemoriaVirtual virtual, MemoriaSwap swap){
+public String referenciacion(int tamañoP, int longMensaje){
     String[] colores = {"R", "G", "B"};
     int pagina = 0;
     int referencia = 0;
     int x = 0;
-    PaginaVirtual paginaV = new PaginaVirtual(pagina, 0, tamañoP);
-    PaginaReal paginaR = new PaginaReal(pagina,0, 0, 0, tamañoP);
     String mensaje = ""; 
+    int bitcount = 0;
+    int paginaM = ancho*alto*3/tamañoP;
+    int despM = -1; 
+    int conteoBM = -1;
     while (x < imagen.length){
 
         int y = 0;
@@ -217,34 +217,49 @@ public String referenciaVirtaul(int tamañoP, MemoriaVirtual virtual, MemoriaSwa
             while (z < imagen[x][y].length){
 
 
+                if (bitcount < (longMensaje)*8 +16){
+                    if (bitcount >= 15 && bitcount%8 == 0){
+                        
+                        despM ++ ;
+                        conteoBM++; 
+                        if (despM>tamañoP-1){
+                            paginaM ++;
+                            despM = 0;
+                        }
+                        mensaje += "Meensaje["+ conteoBM +"]" +"," + paginaM + ","+ despM + "," + "W\n";
+                        
 
-                if (referencia > tamañoP-1){
-                    referencia = 0;
-                    pagina++;
-                    virtual.agregarPaginaVirtual(paginaV);
-                    swap.agregarPaginaReal(paginaR);
-
-                    paginaV = new PaginaVirtual(pagina, 0, tamañoP);
-                    paginaR = new PaginaReal(pagina,0, 0, 0, tamañoP);
-                }
+                    }
+                    
+                    if (referencia > tamañoP-1){
+                        referencia = 0;
+                        pagina++;
+                    }
 
 
 
 
-                paginaV.agregarDato(imagen[x][y][z], referencia);
-                paginaR.agregarDato(imagen[x][y][z], referencia);
 
-                if(pagina == 0 &&   referencia < 16){
 
-                    mensaje += "Imagen["+ x +"]["+y+"] . " + colores[z] +"," + pagina + ","+ referencia + "," + "R\n";
+
+                mensaje += "Imagen["+ x +"]["+y+"] . " + colores[z] +"," + pagina + ","+ referencia + "," + "R\n";
                    
-                }
+                if (bitcount > 15){
+                    if (despM>tamañoP-1){
+                        paginaM ++;
+                        despM = 0;
+                    }
+                    mensaje += "Meensaje["+ conteoBM +"]" +"," + paginaM + ","+ despM + "," + "W\n";
+                    
 
+                }
 
 
                 referencia++;
+                bitcount++;
 
 
+                }
                 z++;
             }
             y++;
@@ -252,8 +267,6 @@ public String referenciaVirtaul(int tamañoP, MemoriaVirtual virtual, MemoriaSwa
 
         x++;
     }
-
-    virtual.agregarPaginaVirtual(paginaV);
 
 
     return mensaje;

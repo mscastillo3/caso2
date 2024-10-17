@@ -3,13 +3,14 @@ import java.util.ArrayList;
 public class actualizarR extends Thread {
 
     private Ram ram;
+    private boolean termina = true;
 
     public actualizarR(Ram ram) {
         this.ram = ram;
     }
 
     public void run() {
-        while (true) {
+        while (termina) {
             try {
                 sleep(2);
             } catch (InterruptedException e) {
@@ -17,9 +18,17 @@ public class actualizarR extends Thread {
             }
             ArrayList<Integer> sacar = new ArrayList<Integer>();
             int x = 0;
-
+            int pr = 0 ;
             synchronized (ram) {
                 for (PaginaReal paginaReal : ram.getPaginasReales()) {
+                    if (paginaReal == null){
+                        x++;
+                        continue;
+                    }
+                    pr ++;
+                    if (pr == ram.getPaginas()) {
+                        break; 
+                    }
                     if (paginaReal.getReferencia() == 1) {
                         paginaReal.setReferencia(0);
                     }
@@ -36,5 +45,9 @@ public class actualizarR extends Thread {
         }
     }
     }
+
+	public void terminar() {
+		termina = false;
+	}
 
 }

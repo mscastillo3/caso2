@@ -6,22 +6,48 @@ public class Ram {
     private int tamañoPaginas;
     private ArrayList<PaginaReal> paginasReales;
     private ArrayList<Integer> sacar = new ArrayList<Integer>();
+    private ArrayList<Integer> pociconesLibres = new ArrayList<Integer>();
+    private int paginas = 0;
     
     public Ram(int marcos, int tamañoPaginas) {
         this.marcos = marcos;
         this.tamañoPaginas = tamañoPaginas;
         paginasReales = new ArrayList<PaginaReal>();
+        for (int i = 0; i < marcos; i++) {
+            paginasReales.add(null);
+            pociconesLibres.add(i);
+        }
+
     }
 
-    public synchronized void agregarPaginaReal(PaginaReal paginaReal) {
-        paginasReales.add (paginaReal) ;
+    public int getPaginas() {
+        return paginas;
     }
 
-    public synchronized void quitarPaginaReal(PaginaReal paginaReal) {
-        paginasReales.remove(paginaReal.getNumero());
+    public void setPaginas(int paginas) {
+        this.paginas = paginas;
     }
 
-    public synchronized PaginaReal conseguirPaginaReal(int numero) {
+    synchronized public void agregarPaginaReal(PaginaReal paginaReal) {
+
+        paginas ++;
+
+        paginasReales.set (pociconesLibres.get(0), paginaReal) ;
+        paginaReal.setNumero(pociconesLibres.get(0));
+        paginaReal.setPresencia(1);
+        paginaReal.setReferencia(1);
+        pociconesLibres.remove(0);
+    }
+
+    synchronized public void quitarPaginaReal(PaginaReal paginaReal) {
+        paginas --;
+        pociconesLibres.add(paginaReal.getNumero());
+        paginasReales.set(paginaReal.getNumero(), null);
+        paginaReal.setNumero(-1);
+        paginaReal.setPresencia(0);
+    }
+
+    synchronized public PaginaReal conseguirPaginaReal(int numero) {
         return paginasReales.get(numero);
     }
 
@@ -51,8 +77,9 @@ public class Ram {
     }
 
     public synchronized boolean estaLlena() {
-        return (paginasReales.size() >= marcos);
+        return (paginas >= marcos);
     }
+    
 
 
     
