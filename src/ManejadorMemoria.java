@@ -5,9 +5,10 @@ public class ManejadorMemoria  {
     private Ram ram;
     private MemoriaVirtual memoriaVirtual;
     private TablaDePaginas tablaDePaginas;
-    private int hits = 0;
-    private int misses = 0;
-    private double tiempo = 0;
+    private long hits = 0;
+    private long misses = 0;
+    private long tiempo = 0;
+    private double tiempor = 0;
 
     public ManejadorMemoria(Ram ram,  MemoriaVirtual memoriaVirtual, TablaDePaginas tablaDePaginas) {
         this.ram = ram;
@@ -23,7 +24,7 @@ public class ManejadorMemoria  {
         if (paginaVirtual.getPresencia() == 1){
             tablaDePaginas.buscarPagina(paginaVirtual.getNumereDePagina(), ram, paginaVirtual);
             
-            tiempo += 0.000025;
+            tiempor += 0.000025;
             hits++;
         }
         else {
@@ -58,19 +59,19 @@ public class ManejadorMemoria  {
 
     
 
-    public int getHits() {
+    public long getHits() {
         return hits;
     }
 
 
-    public int getMisses() {
+    public long getMisses() {
         return misses;
     }
 
 
 
-    public double getTiempo() {
-        return tiempo;
+    public long getTiempo() {
+        return tiempo + (long)tiempor;
     }
 
 

@@ -29,7 +29,7 @@ public class main {
             File file = new File("./data/referencias.txt");
             file.delete();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/referencias.txt", true))) {
-			String datos =  "TP: " + TP + "\n" + "NF: " + NF + "\n" + "NC: " + NC + "\n" + "NR: " + NR + "\n" + "NP: " + NP + "\n" ;
+			String datos =  "P= " + TP + "\n" + "NF= " + NF + "\n" + "NC= " + NC + "\n" + "NR= " + NR + "\n" + "NP= " + NP + "\n" ;
 			writer.write(datos);
             writer.write(info);
 			
@@ -66,8 +66,8 @@ public class main {
                 manejo.start();
                 actualizarR bitR = new actualizarR(ram);
                 bitR.start();
-                int hit = 0;
-                double tiempo = 0; 
+                long hit = 0;
+                long tiempo = 0; 
 
                 String linea = lector.readLine();
 
@@ -105,13 +105,20 @@ public class main {
                 bitR.terminar();
                 manejo.terminar();
                 hit += simulador.getHits();
-                int miss = simulador.getMisses();
+                long miss = simulador.getMisses();
                 tiempo += simulador.getTiempo();
-                int total = hit + miss;
-                System.out.println("hits:"+ hit);
-                System.out.println("misses:"+ miss);
-                System.out.println("Tiempo:"+ tiempo);
-                System.out.println("paginas hacedidas:"+ total);
+                long total = hit + miss;
+                System.out.println("hits: "+ hit);
+                System.out.println("misses: "+ miss);
+                System.out.println("Tiempo: "+ tiempo +"ms");
+                System.out.println("paginas hacedidas: "+ total);
+                long tRam = (long) (total*0.000025) ;
+                long tswap = (long) (total*10) ;
+                long porcentaje = hit*100/total;
+                System.out.println("Si todo fuera en ram: "+ tRam +"ms");
+                System.out.println("Si todo fuera en swap: "+ tswap +"ms");
+                System.out.println("Porcentaje de aciertos: "+ porcentaje +"%");
+
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
