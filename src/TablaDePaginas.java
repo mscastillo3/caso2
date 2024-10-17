@@ -20,9 +20,6 @@ public class TablaDePaginas extends Thread{
             }
         }
         PaginaReal paginaReal = ram.conseguirPaginaReal(x) ;
-        if (paginaReal == null){
-            int y = 1;
-         }
         paginaReal.setReferencia(1);
     }
     }
@@ -38,14 +35,9 @@ public class TablaDePaginas extends Thread{
     synchronized public void  quitarPagina(Integer vpagianReal, Ram ram, MemoriaVirtual memoriaVirtual) {
         synchronized (ram) {
         PaginaReal paginaReal = ram.conseguirPaginaReal(vpagianReal);
-        if (paginaReal == null){
-           int x = 1;
-        }
         memoriaVirtual.RecuperarPagina(listaDeRelacion[paginaReal.getNumero()]).setPresencia(0);
         listaDeRelacion[paginaReal.getNumero()] = -1;
-
-        ram.quitarPaginaReal(paginaReal);
-        this.notify();}
+        ram.quitarPaginaReal(paginaReal);}
 
 
     }
@@ -55,11 +47,11 @@ public class TablaDePaginas extends Thread{
         return memoriaVirtual.RecuperarPagina(pagina);
     }
 
-    public ArrayList<Integer> getSacar(Ram ram) {
+    public ArrayList<ArrayList<Integer>> getSacar(Ram ram) {
         return ram.getSacar();
     }
 
-    public void setSacar(ArrayList<Integer> arrayList, Ram ram) {
+    public void setSacar(ArrayList<ArrayList<Integer>> arrayList, Ram ram) {
        ram.setSacar(arrayList);;
     }
 

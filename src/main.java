@@ -61,57 +61,22 @@ public class main {
 
                 Ram ram = new Ram(marcosP, TP);
                 TablaDePaginas tabla = new TablaDePaginas(marcosP);
-                ManejadorMemoria simulador = new ManejadorMemoria(ram, memoriaV, tabla);
-                manejoT manejo = new manejoT(ram, memoriaV, tabla);
-                manejo.start();
+                ManejadorMemoria simulador = new ManejadorMemoria(ram, memoriaV, tabla,lector, TP);
+                simulador.start();
                 actualizarR bitR = new actualizarR(ram);
                 bitR.start();
-                long hit = 0;
-                long tiempo = 0; 
-
-                String linea = lector.readLine();
-
-                HashMap<Integer, Integer> paginasC = new HashMap<Integer, Integer>();
-
-
-                while (linea != null){
-
-                    String[] contenido = linea.split(",");
-
-                    if (!paginasC.containsKey(Integer.parseInt(contenido[1]))){
-                        paginasC.put(Integer.parseInt(contenido[1]), Integer.parseInt(contenido[1]));
-                        PaginaVirtual paginaV = new PaginaVirtual(Integer.parseInt(contenido[1]), 0, TP);
-                        PaginaReal paginaR = new PaginaReal(0,0,0, TP);
-                        memoriaV.agregarPaginaVirtual(paginaV);
-                       
-                        if (!ram.estaLlena()){
-                                        tabla.reemplazarPagina(paginaR, paginaV, ram);
-                                        tiempo += 0.000025;
-                                        hit++;
-
-                                }
-                        else {
-                            simulador.informacion(Integer.parseInt(contenido[1]), Integer.parseInt(contenido[2]));
-                        }
-
-                        
-                    }
-                    else {
-                        simulador.informacion(Integer.parseInt(contenido[1]), Integer.parseInt(contenido[2]));
-                    }
-                    linea = lector.readLine();
-                }
-
+                synchronized (simulador) {
+                    simulador.wait();}
+                
                 bitR.terminar();
-                manejo.terminar();
-                hit += simulador.getHits();
+                long hit = simulador.getHits();
                 long miss = simulador.getMisses();
-                tiempo += simulador.getTiempo();
+                long tiempo = simulador.getTiempo();
                 long total = hit + miss;
                 System.out.println("hits: "+ hit);
                 System.out.println("misses: "+ miss);
                 System.out.println("Tiempo: "+ tiempo +"ms");
-                System.out.println("paginas hacedidas: "+ total);
+                System.out.println("paginas accedidas: "+ total);
                 long tRam = (long) (total*0.000025) ;
                 long tswap = (long) (total*10) ;
                 long porcentaje = hit*100/total;
@@ -121,6 +86,9 @@ public class main {
 
 
             } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }}
