@@ -29,11 +29,11 @@ public class Ram {
 
     }
 
-    public int getPaginas() {
+    synchronized public int getPaginas() {
         return paginas;
     }
 
-    public void setPaginas(int paginas) {
+    synchronized public void setPaginas(int paginas) {
         this.paginas = paginas;
     }
 

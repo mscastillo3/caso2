@@ -25,7 +25,7 @@ public class ManejadorMemoria extends Thread {
 
     public void informacion(int pagina, int mod)  {
         
-        synchronized(tablaDePaginas){
+        synchronized(ram){
                 
         PaginaVirtual paginaVirtual = tablaDePaginas.RecuperarPaginaV(pagina, memoriaVirtual);
         if (paginaVirtual.getPresencia() == 1){

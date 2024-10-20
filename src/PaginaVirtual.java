@@ -13,8 +13,8 @@ public class PaginaVirtual {
     public int getDireccion() { return numeroDePagina; }
     public void setDireccion(int direccion) { this.numeroDePagina = direccion; }
 
-    synchronized public int getPresencia() { return presencia; }
-    synchronized public void setPresencia(int presencia) { this.presencia = presencia; }
+    public int getPresencia() { return presencia; }
+    public void setPresencia(int presencia) { this.presencia = presencia; }
 
     
 
