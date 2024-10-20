@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.io.*;
 import java.util.HashMap;
+
 public class main {
 
     public static void main(String[] args) {
@@ -9,7 +10,7 @@ public class main {
 
         boolean terminar = true;
         while (terminar){
-        String accion = input("¿Que quiers hacer ingresa el numero? \n1.Generación de las referencias \n2. Calcular datos buscados \n3. salir \nrespuesta");
+        String accion = input("¿Que quieres hacer ingresa el numero? \n1.Generación de las referencias \n2. Calcular datos buscados \n3. Escribir imagen \n4. salir \nrespuesta");
         if (accion.equals("1")){
             int TP = Integer.valueOf(input("Por favor, ingrese el tamaño de las paginas")) ;
             String ruta = input("Por favor, ingrese la ruta de la imagen");
@@ -26,6 +27,7 @@ public class main {
             System.out.println("El numero de columnas es: " + NC);
             System.out.println("El numero de registros son: " + NR);
             System.out.println("El numero de paginas que se van a usar son: " + NP);
+
             File file = new File("./data/referencias.txt");
             file.delete();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("./data/referencias.txt", true))) {
@@ -93,7 +95,33 @@ public class main {
                 e.printStackTrace();
             }}
 
-        else if (accion.equals("3")){
+            else if (accion.equals("3")) {
+                // Pedir al usuario las rutas de la imagen y del archivo de texto
+                String inputJpg = input("Por favor, ingrese la ruta de la imagen JPG de entrada");
+                String outputBmp = input("Por favor, ingrese la ruta de la imagen BMP de salida");
+                String rutaArchivoTxt = input("Por favor, ingrese la ruta del archivo de texto que contiene el mensaje");
+            
+                // Leer el mensaje desde el archivo de texto
+                String mensaje = "";
+                try (BufferedReader reader = new BufferedReader(new FileReader(rutaArchivoTxt))) {
+                    StringBuilder sb = new StringBuilder();
+                    String linea;
+                    while ((linea = reader.readLine()) != null) {
+                        sb.append(linea).append("\n");
+                    }
+                    mensaje = sb.toString().trim(); // Eliminar el salto de línea final
+                } catch (IOException e) {
+                    System.out.println("Error al leer el archivo: " + e.getMessage());
+                    return;
+                }
+            
+                // Llamar al método para esconder el mensaje
+                Imagen.esconderMensajeEnImagen(inputJpg, outputBmp, mensaje);
+            }
+            
+            
+            
+        else if (accion.equals("4")){
             terminar = false;
         }
         else{

@@ -74,11 +74,13 @@ public class ManejadorMemoria extends Thread {
             linea = lector.readLine();
         HashMap<Integer, Integer> paginasC = new HashMap<Integer, Integer>();
         while (linea != null){
+            
             try {
                 sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            
 
             String[] contenido = linea.split(",");
             int mod = 0;

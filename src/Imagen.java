@@ -1,6 +1,11 @@
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.awt.image.BufferedImage;
+
+
 
 public class Imagen {
 
@@ -227,7 +232,6 @@ public String referenciacion(int tamañoP, int longMensaje){
                             despM = 0;
                         }
                         mensaje += "Meensaje["+ conteoBM +"]" +"," + paginaM + ","+ despM + "," + "W\n";
-                        
 
                     }
                     
@@ -235,11 +239,6 @@ public String referenciacion(int tamañoP, int longMensaje){
                         referencia = 0;
                         pagina++;
                     }
-
-
-
-
-
 
 
                 mensaje += "Imagen["+ x +"]["+y+"] . " + colores[z] +"," + pagina + ","+ referencia + "," + "R\n";
@@ -250,10 +249,8 @@ public String referenciacion(int tamañoP, int longMensaje){
                         despM = 0;
                     }
                     mensaje += "Meensaje["+ conteoBM +"]" +"," + paginaM + ","+ despM + "," + "W\n";
-                    
-
+                
                 }
-
 
                 referencia++;
                 bitcount++;
@@ -273,5 +270,39 @@ public String referenciacion(int tamañoP, int longMensaje){
 
 
 }
+public static void esconderMensajeEnImagen(String inputJpg, String outputBmp, String mensaje) {
+    try {
+        // 1. Leer la imagen JPG
+        BufferedImage imagenJpg = ImageIO.read(new File(inputJpg));
+
+        // 2. Guardar la imagen como BMP (Formato de 24 bits)
+        File archivoBmp = new File(outputBmp);
+        ImageIO.write(imagenJpg, "bmp", archivoBmp);
+
+        // 3. Crear un objeto Imagen a partir del archivo BMP recién creado
+        Imagen imagenBmp = new Imagen(outputBmp);
+
+        // 4. Convertir el mensaje a un arreglo de caracteres
+        char[] mensajeChars = mensaje.toCharArray();
+        int longitudMensaje = mensajeChars.length;
+
+        // 5. Esconder el mensaje en la imagen
+        if (longitudMensaje * 8 + 16 > imagenBmp.getAncho() * imagenBmp.getAlto() * 3) {
+            System.out.println("El mensaje es demasiado largo para esconder en la imagen.");
+            return;
+        }
+        imagenBmp.esconder(mensajeChars, longitudMensaje);
+
+        // 6. Escribir la imagen BMP modificada con el mensaje escondido
+        imagenBmp.escribirImagen(outputBmp);
+
+        System.out.println("Mensaje escondido exitosamente en la imagen BMP: " + outputBmp);
+
+    } catch (IOException e) {
+        System.err.println("Error al procesar la imagen: " + e.getMessage());
+        e.printStackTrace();
+    }
 }
 
+
+}
